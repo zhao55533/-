@@ -1,0 +1,63 @@
+git config --global user.name "coder-pig"
+git config --global user.email "779878443@qq.com"
+
+git init  初始化仓库
+
+ls -al可以看到下目录下有个.git的文件夹就是他了！
+
+创建完代码仓库，接下来说下如何提交代码，我们是先用add命令把要提交的内容都加进来，然后commit才是真的去执行提交操作！命令例子如下，你可以一次次慢慢添加，
+当然也可以全部提交，直接git add .即可完成！我们现在工程目录下创建一个readme.txt的文件试试，随便写点东西，然后依次输入下述指令：
+
+ git add readme.txt
+ git commit -m "Wrote a readme file"
+
+当然如果你可以add多个文件后再一次性commit，不过如果我们改动的文件很多的话，我们可以git add .一次添加全部，
+但有一些是几百年都不变一次的又或者自动生成的，比如lib，gen，bin文件夹等等，
+我们可以在代码仓库的根目录下创建一个名为.gitignore的文件，然后编辑里面的内容，把不需提交的文件忽略掉！
+
+查看修改内容
+好吧，前面我们用git add提交了整个项目到本地仓库，接下来我们改点东西，然后使用git status可以查看修改的部分，
+比如，我们删掉MainActivity.java里的菜单的代码以及多余的菜单相关的包！
+
+git diff 查看改了什么，按Q可以退回命令行输入！
+
+git log 查看提交记录
+我们取其中一小部分来分析：
+
+commit defd8af52be5183dfceb3e5cf23f78ea47d013b0
+Author: coder-pig <779878443@qq.com>
+Date:   Fri Jun 19 17:00:36 2015 +0800
+MainActivity Delete Menu
+依次是：
+此次提交对应的版本号
+提交人：姓名 邮箱
+提交的时间
+提交版本修改的内容：就是我们commit -m "xxx"里的xxx
+
+撤销未提交的修改:
+在你还没add的情况，比如我们在MainActivity里随便添加一条语句，然后ctrl + s保存代码！
+然后命令行键入：git diff：
+我们可以回去把这句代码删掉，但是如果改的有上千行你怎么改，于是乎这个时候我们可以使用
+
+git checkout src/com/jay/example/testforgit/MainActivity.java
+
+当然，如果我们已经add了的话，那么checkout是没任何作用的，我们要先取消添加才可以撤回提交，使用下述指令：
+git reset HEAD src/com/jay/example/testforgit/MainActivity.java
+git checkout src/com/jay/example/testforgit/MainActivity.java
+
+版本回退
+我们回到前一个提交的版本吧，依次键入下述指令：
+
+ git reset --hard HEAD
+ git reset --hard HEAD^
+ git log
+当然你可以直接这样写：
+
+git reset --hard ad2080c     ad2080c是版本号前六位
+
+回退后，你突然后悔了，想回退回新的那个版本，可是遗憾的是，
+你键入git log却发现没有了最新的那个版本号，这怎么办呢... 没事，
+Git中给你提供了这颗"后悔药"，Git记录着你输入的每一条指令呢！键入：
+git reflog
+然后键入：
+git reset --hard ad2080c
